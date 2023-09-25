@@ -2,9 +2,15 @@ export function getOpenPromise () {
     const wrapper = {
         isResolved: false,
         isPending: true,
-        isRejected: false
+        isRejected: false,
+        resolve: {} as (value: any) => void,
+        reject: {} as (reason?: any) => void
     };
-    const promise = new Promise((resolve, reject) => {
+    const promise: Promise<any> & {
+        isResolved?: boolean,
+        isPending?: boolean,
+        isRejected?: boolean,
+    } = new Promise((resolve, reject) => {
         wrapper.resolve = resolve;
         wrapper.reject = reject;
     })
@@ -23,5 +29,5 @@ export function getOpenPromise () {
             throw (e);
         }
     );
-    return promise;
+    return promise as Promise<any> & typeof wrapper;
 }
